@@ -1,7 +1,10 @@
 module Ch01Spec (spec) where
 
 import Test.Hspec
-import Ch01 (sortWords, countRuns, sortRuns, showRun)
+import Ch01
+  ( sortWords, countRuns, sortRuns, showRun
+  , convert, convert1
+  )
 
 spec :: Spec
 spec = do
@@ -14,3 +17,11 @@ spec = do
       sortRuns [(2, "be"), (1, "not"), (1, "or"), (2, "to")] `shouldBe` [(2, "be"), (2, "to"), (1, "not"), (1, "or")]
     it "showRun" $ do
       showRun (2, "be") `shouldBe` " be: 2\n"
+
+  describe "Ex 1.4" $ do
+    it "convert" $ do
+      convert 308000 `shouldBe` "three hundred and eight thousand"
+      convert 369027 `shouldBe` "three hundred and sixty-nine thousand and twenty-seven"
+      convert 369401 `shouldBe` "three hundred and sixty-nine thousand four handred and one"
+    it "convert1" $ do
+      convert1 0 `shouldBe` "zero"
