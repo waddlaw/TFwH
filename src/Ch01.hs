@@ -13,7 +13,7 @@ module Ch01 (
   , commonWords, sortWords, countRuns, sortRuns, showRun
   -- * 1.4 例題: 数を言葉に変換する (p.20-p.25)
   -- ** 関数
-  , convert, convert1, convert2, combine2, convert2', convert3, convert6, link
+  , convert, convert1, digits2, convert2, convert2', convert3, convert6, link
   -- * 1.6 練習問題
   -- ** 練習問題A
   , double
