@@ -4,3 +4,18 @@ packages:
 extra-deps: []
 flags: {}
 extra-package-dbs: []
+ghc-options:
+  "*": -Wall
+  "TFWH":  -fforce-recomp -threaded -rtsopts -with-rtsopts=-N
+rebuild-ghc-options: true
+
+build:
+  library-profiling: false
+  executable-profiling: false
+
+  haddock: true
+  haddock-arguments:
+    haddock-args: ["--odir=../../../../../../../doc"]
+  open-haddocks: false
+
+  test: true

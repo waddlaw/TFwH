@@ -1,9 +1,10 @@
 module Ch01Spec (spec) where
 
 import Test.Hspec
+import Test.QuickCheck
 import Ch01
   ( sortWords, countRuns, sortRuns, showRun
-  , convert, convert1
+  , convert, convert1, convert2, convert2'
   )
 
 spec :: Spec
@@ -22,6 +23,14 @@ spec = do
     it "convert" $ do
       convert 308000 `shouldBe` "three hundred and eight thousand"
       convert 369027 `shouldBe` "three hundred and sixty-nine thousand and twenty-seven"
-      convert 369401 `shouldBe` "three hundred and sixty-nine thousand four handred and one"
+      convert 369401 `shouldBe` "three hundred and sixty-nine thousand four hundred and one"
     it "convert1" $ do
       convert1 0 `shouldBe` "zero"
+    it "convert2 == convert2'" $ property $
+        \x -> do
+          let px = getPositive (x::Positive Int)
+          convert2 px == convert2' px
+
+  describe "Ex 1.5" $ do
+    it "convert" $ do
+      convert 301123 `shouldBe` "three hundred and one thousand one hundred and twenty-three"
