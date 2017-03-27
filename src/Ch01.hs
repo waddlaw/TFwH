@@ -17,6 +17,7 @@ module Ch01 (
   -- * 1.6 練習問題
   -- ** 練習問題A
   , double
+  -- ** 練習問題B
   ) where
 
 import Prelude hiding (Word)
@@ -217,3 +218,17 @@ link h = if h < 100 then " and " else " "
 --
 double :: Integer -> Integer
 double = (2*)
+
+-- |
+--
+-- =正しい Haskell の式はどれか？
+--
+-- == 正しい
+-- > sin theta^2
+-- > (sin theta)^2
+--
+-- == 間違い
+-- > sin^2 theta
+--
+-- == 問題の答え
+-- (sin theta^2) / (2*pi)
