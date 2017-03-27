@@ -128,6 +128,8 @@ digits2 n = (n `div` 10, n `mod` 10)
 --
 -- ver.1 与えられる数値が2桁 (10 <= n < 100) の場合
 --
+-- __定義のみで利用しない__
+--
 convert2 :: Int -> String
 convert2 = combine2 . digits2
 
