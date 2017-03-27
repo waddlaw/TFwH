@@ -18,6 +18,7 @@ module Ch01 (
   -- ** 練習問題A
   , double
   -- ** 練習問題B
+  , ansB
   ) where
 
 import Prelude hiding (Word)
@@ -232,3 +233,5 @@ double = (2*)
 --
 -- == 問題の答え
 -- (sin theta^2) / (2*pi)
+ansB :: String
+ansB = undefined
