@@ -14,8 +14,6 @@ build:
   executable-profiling: false
 
   haddock: true
-  haddock-arguments:
-    haddock-args: ["--odir=../../../../../../../doc"]
   open-haddocks: false
 
   test: true

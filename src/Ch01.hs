@@ -13,24 +13,41 @@ type Text = [Char]
 type Word = [Char]
 
 -- |
--- -- Base64 encoding.
--- --
--- -- >>> encode "foo bar"
--- -- "Zm9vIGJhcg=="
+--
+-- 文章中の単語数を返す
+--
 commonWords :: Int -> Text -> String
 commonWords n = concat . map showRun . take n
               . sortRuns . countRuns . sortWords
               . words . map toLower
 
+-- |
+--
+-- 単語のリストをアルファベット順にソートする
+--
+-- >>> sortWords ["to", "be", "or", "not", "to", "be"]
+-- ["be", "be", "not", "or", "to", "to"]
 sortWords :: [Word] -> [Word]
 sortWords = sort
 
+-- |
+--
+-- 単語が何回連続して出現するかを数える
+--
+-- >>> countRuns ["be", "be", "not", "or", "to", "to"]
+-- [(2, "be"), (1, "not"), (1, "or"), (2, "to")]
 countRuns :: [Word] -> [(Int, Word)]
 countRuns = foldr go []
   where
     go w [] = [(1, w)]
     go w1 (l@(n, w2):ls) = if w1 == w2 then (n+1, w2):ls else (1, w1):l:ls
 
+-- |
+--
+-- 単語を頻度の降順でソートする
+--
+-- >>> sortRuns [(2, "be"), (1, "not"), (1, "or"), (2, "to")]
+-- [(2, "be"), (2, "to"), (1, "not"), (1, "or")]
 sortRuns :: [(Int, Word)] -> [(Int, Word)]
 sortRuns = sortBy (flip $ comparing fst)
 
@@ -38,6 +55,12 @@ showRun :: (Int, Word) -> String
 showRun (n, w) = mconcat [" ", w, ": " , show n, "\n"]
 
 -- 1.4 例題:数を言葉に変換する
+-- |
+--
+-- 数を言葉に変換する
+--
+-- >>> convert 308000
+-- "three hundred and eight thousand"
 convert :: Int -> String
 convert = convert6
 
@@ -53,9 +76,17 @@ tens  = [ "twenty", "thirty", "forty", "fifty", "sixty"
         , "seventy", "eighty", "ninety"
         ]
 
+-- |
+--
+-- 与えらる数値が1桁 (0 <= n < 10) の場合
+--
 convert1 :: Int -> String
 convert1 n = units !! n
 
+-- |
+--
+-- 2桁の数値のそれぞれの値を求める
+-- 実際の定義では利用されない
 digits2 :: Int -> (Int, Int)
 digits2 n = (n `div` 10, n `mod` 10)
 
