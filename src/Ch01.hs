@@ -1,5 +1,18 @@
-module Ch01
-  ( commonWords, sortWords, countRuns, sortRuns, showRun
+{-|
+Module      : Ch01
+Description : 第1章 関数プログラミングとは何か
+Copyright   : (c) Shinya Yamaguchi, 2017
+Stability   : experimental
+Portability : POSIX
+-}
+module Ch01 (
+  -- * 1.3 例題: 頻出単語 (p.17-p.20)
+  -- ** 型
+  Text, Word
+  -- ** 関数
+  , commonWords, sortWords, countRuns, sortRuns, showRun
+  -- * 1.4 例題: 数を言葉に変換する (p.20-p.25)
+  -- ** 関数
   , convert, convert1, convert2, convert2'
   ) where
 
@@ -9,13 +22,17 @@ import Data.Ord (comparing)
 import Data.List (sort, sortBy)
 
 -- 1.3 例題: 頻出単語
+-- | 文章を表す型
 type Text = [Char]
+-- | 単語を表す型
 type Word = [Char]
 
 -- |
 --
 -- 文章中の単語数を返す
 --
+-- >>> showRun (2, "be")
+-- " be: 2\n"
 commonWords :: Int -> Text -> String
 commonWords n = concat . map showRun . take n
               . sortRuns . countRuns . sortWords
@@ -26,7 +43,7 @@ commonWords n = concat . map showRun . take n
 -- 単語のリストをアルファベット順にソートする
 --
 -- >>> sortWords ["to", "be", "or", "not", "to", "be"]
--- ["be", "be", "not", "or", "to", "to"]
+-- ["be","be","not","or","to","to"]
 sortWords :: [Word] -> [Word]
 sortWords = sort
 
@@ -35,7 +52,7 @@ sortWords = sort
 -- 単語が何回連続して出現するかを数える
 --
 -- >>> countRuns ["be", "be", "not", "or", "to", "to"]
--- [(2, "be"), (1, "not"), (1, "or"), (2, "to")]
+-- [(2,"be"),(1,"not"),(1,"or"),(2,"to")]
 countRuns :: [Word] -> [(Int, Word)]
 countRuns = foldr go []
   where
@@ -47,10 +64,16 @@ countRuns = foldr go []
 -- 単語を頻度の降順でソートする
 --
 -- >>> sortRuns [(2, "be"), (1, "not"), (1, "or"), (2, "to")]
--- [(2, "be"), (2, "to"), (1, "not"), (1, "or")]
+-- [(2,"be"),(2,"to"),(1,"not"),(1,"or")]
 sortRuns :: [(Int, Word)] -> [(Int, Word)]
 sortRuns = sortBy (flip $ comparing fst)
 
+-- |
+--
+-- 結果を整形する
+--
+-- >>> showRun (2, "be")
+-- " be: 2\n"
 showRun :: (Int, Word) -> String
 showRun (n, w) = mconcat [" ", w, ": " , show n, "\n"]
 
@@ -78,7 +101,7 @@ tens  = [ "twenty", "thirty", "forty", "fifty", "sixty"
 
 -- |
 --
--- 与えらる数値が1桁 (0 <= n < 10) の場合
+-- 与えられる数値が1桁 (0 <= n < 10) の場合
 --
 convert1 :: Int -> String
 convert1 n = units !! n
@@ -90,6 +113,10 @@ convert1 n = units !! n
 digits2 :: Int -> (Int, Int)
 digits2 n = (n `div` 10, n `mod` 10)
 
+-- |
+--
+-- ver.1 与えられる数値が2桁 (10 <= n < 100) の場合
+-- 
 convert2 :: Int -> String
 convert2 = combine2 . digits2
 
@@ -100,6 +127,11 @@ combine2 (t, u)
   | 2 <= t && u == 0 = tens !! (t - 2)
   | otherwise = tens !! (t - 2) ++ "-" ++ units !! u
 
+
+-- |
+--
+-- ver.2 与えられる数値が2桁 (10 <= n < 100) の場合
+-- 
 convert2' :: Int -> String
 convert2' n
   | t == 0 = units !! u
