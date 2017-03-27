@@ -19,6 +19,8 @@ module Ch01 (
   , double
   -- ** 練習問題B
   , ansB
+  -- ** 練習問題C
+  , ansC
   ) where
 
 import Prelude hiding (Word)
@@ -238,3 +240,25 @@ double = (2*)
 --
 ansB :: String
 ansB = undefined
+
+-- |
+--
+-- = 問題の答え
+-- > 'H' :: Char
+-- > "H" :: String
+--
+-- 2001は数値であり、"2001"は文字列。
+--
+-- >>> [1,2,3] ++ [3,2,1]
+-- [1,2,3,3,2,1]
+--
+-- >>> "Hello" ++ " World!"
+-- "Hello World!"
+--
+-- >>> [1,2,3] ++ []
+-- [1,2,3]
+--
+-- >>> "Hello" ++ "" ++ "World!"
+-- "HelloWorld!"
+ansC :: String
+ansC = undefined
