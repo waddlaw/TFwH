@@ -227,11 +227,14 @@ double = (2*)
 -- == 正しい
 -- > sin theta^2
 -- > (sin theta)^2
---
 -- == 間違い
 -- > sin^2 theta
 --
 -- == 問題の答え
--- (sin theta^2) / (2*pi)
+-- > sin (theta*2) / (2*pi)
+--
+-- == 以下は結合性により、求める結果とならないことに注意
+-- > sin (2 * theta) / 2 * pi
+--
 ansB :: String
 ansB = undefined
