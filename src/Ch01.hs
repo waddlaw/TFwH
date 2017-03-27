@@ -14,6 +14,9 @@ module Ch01 (
   -- * 1.4 例題: 数を言葉に変換する (p.20-p.25)
   -- ** 関数
   , convert, convert1, convert2, convert2'
+  -- * 練習問題 A
+  -- ** 関数
+  , double
   ) where
 
 import Prelude hiding (Word)
@@ -116,7 +119,7 @@ digits2 n = (n `div` 10, n `mod` 10)
 -- |
 --
 -- ver.1 与えられる数値が2桁 (10 <= n < 100) の場合
--- 
+--
 convert2 :: Int -> String
 convert2 = combine2 . digits2
 
@@ -131,7 +134,7 @@ combine2 (t, u)
 -- |
 --
 -- ver.2 与えられる数値が2桁 (10 <= n < 100) の場合
--- 
+--
 convert2' :: Int -> String
 convert2' n
   | t == 0 = units !! u
@@ -159,3 +162,27 @@ convert6 n
 
 link :: Int -> String
 link h = if h < 100 then " and " else " "
+
+-- 1.6 練習問題
+-- |
+--
+-- = 練習問題A
+-- 整数を2倍する関数
+--
+-- >>> map double [1,4,4,3]
+-- [2,8,8,6]
+-- >>> map (double . double) [1,4,4,3]
+-- [4,16,16,12]
+-- >>> map double []
+-- []
+--
+-- > sum :: [Integer] -> Integer
+-- > map :: (a -> b) -> [a] -> [b]
+-- > concat :: [[a]] -> [a]
+-- > sort :: Ord a => [a] -> [a]
+--
+-- prop> (sum $ map double xs) == (double $ sum xs)
+-- prop> (sum $ map sum xs) == (sum $ concat xs)
+-- prop> (sum $ sort xs) == (sum xs)
+double :: Integer -> Integer
+double = (2*)
