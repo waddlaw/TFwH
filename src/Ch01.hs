@@ -13,7 +13,7 @@ module Ch01 (
   , commonWords, sortWords, countRuns, sortRuns, showRun
   -- * 1.4 例題: 数を言葉に変換する (p.20-p.25)
   -- ** 関数
-  , convert, convert1, convert2, convert2'
+  , convert, convert1, convert2, combine2, convert2', convert3, convert6, link
   -- * 1.6 練習問題
   -- ** 練習問題A
   , double
@@ -36,6 +36,7 @@ type Word = [Char]
 --
 -- >>> showRun (2, "be")
 -- " be: 2\n"
+--
 commonWords :: Int -> Text -> String
 commonWords n = concat . map showRun . take n
               . sortRuns . countRuns . sortWords
@@ -47,6 +48,7 @@ commonWords n = concat . map showRun . take n
 --
 -- >>> sortWords ["to", "be", "or", "not", "to", "be"]
 -- ["be","be","not","or","to","to"]
+--
 sortWords :: [Word] -> [Word]
 sortWords = sort
 
@@ -56,6 +58,7 @@ sortWords = sort
 --
 -- >>> countRuns ["be", "be", "not", "or", "to", "to"]
 -- [(2,"be"),(1,"not"),(1,"or"),(2,"to")]
+--
 countRuns :: [Word] -> [(Int, Word)]
 countRuns = foldr go []
   where
@@ -68,6 +71,7 @@ countRuns = foldr go []
 --
 -- >>> sortRuns [(2, "be"), (1, "not"), (1, "or"), (2, "to")]
 -- [(2,"be"),(2,"to"),(1,"not"),(1,"or")]
+--
 sortRuns :: [(Int, Word)] -> [(Int, Word)]
 sortRuns = sortBy (flip $ comparing fst)
 
@@ -77,6 +81,7 @@ sortRuns = sortBy (flip $ comparing fst)
 --
 -- >>> showRun (2, "be")
 -- " be: 2\n"
+--
 showRun :: (Int, Word) -> String
 showRun (n, w) = mconcat [" ", w, ": " , show n, "\n"]
 
@@ -87,6 +92,7 @@ showRun (n, w) = mconcat [" ", w, ": " , show n, "\n"]
 --
 -- >>> convert 308000
 -- "three hundred and eight thousand"
+--
 convert :: Int -> String
 convert = convert6
 
@@ -112,7 +118,8 @@ convert1 n = units !! n
 -- |
 --
 -- 2桁の数値のそれぞれの値を求める
--- 実際の定義では利用されない
+-- __定義のみで利用しない__
+--
 digits2 :: Int -> (Int, Int)
 digits2 n = (n `div` 10, n `mod` 10)
 
@@ -123,13 +130,17 @@ digits2 n = (n `div` 10, n `mod` 10)
 convert2 :: Int -> String
 convert2 = combine2 . digits2
 
+-- |
+--
+-- 2つの数値を繋げて言葉に変換する
+-- __定義のみで利用しない__
+--
 combine2 :: (Int, Int) -> String
 combine2 (t, u)
   | t == 0           = units !! u
   | t == 1           = teens !! u
   | 2 <= t && u == 0 = tens !! (t - 2)
   | otherwise = tens !! (t - 2) ++ "-" ++ units !! u
-
 
 -- |
 --
@@ -144,6 +155,10 @@ convert2' n
   where
     (t, u) = (n `div` 10, n `mod` 10)
 
+-- |
+--
+-- 3桁までの数を言葉に変換する
+--
 convert3 :: Int -> String
 convert3 n
   | h == 0    = convert2' t
@@ -152,6 +167,10 @@ convert3 n
   where
     (h, t) = (n `div` 100, n `mod` 100)
 
+-- |
+--
+-- 6桁までの数を言葉に変換する
+--
 convert6 :: Int -> String
 convert6 n
   | m == 0    = convert3 h
@@ -160,6 +179,12 @@ convert6 n
   where
     (m, h) = (n `div` 1000, n `mod` 1000)
 
+-- |
+--
+-- 0 < m かつ 0 < h < 100 の場合に and でつなぐ関数
+--
+-- > (m, h) = (n `div` 1000, n `mod` 1000)
+--
 link :: Int -> String
 link h = if h < 100 then " and " else " "
 
@@ -181,8 +206,10 @@ link h = if h < 100 then " and " else " "
 -- > sort   :: Ord a => [a] -> [a]
 --
 -- 以下の性質が成り立つ
+--
 -- prop> (sum $ map double xs) == (double $ sum xs)
 -- prop> (sum $ map sum xs) == (sum $ concat xs)
 -- prop> (sum $ sort xs) == (sum xs)
+--
 double :: Integer -> Integer
 double = (2*)
