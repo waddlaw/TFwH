@@ -26,6 +26,9 @@ module Ch01 (
   -- ** 練習問題E
   , ansE
   -- ** 練習問題F
+  -- *** 型
+  , Label
+  -- *** 関数
   , anagrams, showEntry
   ) where
 
@@ -278,8 +281,8 @@ ansC = undefined
 -- > words . map toLower
 --
 -- 単語に分けてから小文字に変換する方法
+-- 
 -- > map (map toLower) . words
---
 -- > words   :: String -> [String]
 -- > toLower :: Char -> Char
 --
@@ -292,8 +295,11 @@ ansD = undefined
 -- = 問題の答え
 --
 -- (+)  : 結合性を持つ (単位元: 0)
+--
 -- (++) : 結合性を持つ (単位元: [])
+--
 -- (.)  : 結合性を持つ (単位元: id)
+--
 -- (/)  : 結合性を持たない
 --
 -- prop> (x + (y + z)) == ((x + y) + z)
