@@ -30,12 +30,15 @@ module Ch01 (
   , Label
   -- *** 関数
   , anagrams, showEntry
+  -- ** 練習問題G
+  , song
   ) where
 
 import Prelude hiding (Word)
 import Data.Char (toLower)
 import Data.Ord (comparing)
 import Data.List (sort, sortBy, sortOn, intersperse)
+import Data.Char (toUpper)
 
 -- 1.3 例題: 頻出単語
 -- | 文章を表す型
@@ -281,7 +284,7 @@ ansC = undefined
 -- > words . map toLower
 --
 -- 単語に分けてから小文字に変換する方法
--- 
+--
 -- > map (map toLower) . words
 -- > words   :: String -> [String]
 -- > toLower :: Char -> Char
@@ -374,3 +377,42 @@ groupByLabel = init . foldl go e
 -- "eginor: ignore,region"
 showEntry :: (Label, [Word]) -> String
 showEntry (l, ws) = l ++ ": " ++ (concat $ intersperse "," ws)
+
+-- |
+--
+-- song n は n 人の男が登場する歌
+--
+song :: Int -> String
+song n = if n == 0 then ""
+       else song (n-1) ++ "\n" ++ verse n
+
+-- |
+--
+-- n 人目の段落の歌詞
+--
+verse :: Int -> String
+verse n = (toUpperOnlyHead $ line1 n) ++ line2 ++ (toUpperOnlyHead $ line3 n) ++ line4
+  where
+    line1 1 = (num!!0) ++ " man went to mow\n"
+    line1 m = (num!!(m-1)) ++ " men went to mow\n"
+    line2   = "Went to mow a meadow\n"
+    line3 1 = (num!!0) ++ " man and his dog\n"
+    line3 m = (num!!(m-1)) ++ " men, " ++ line3 (m-1)
+    line4   = "Went to mow a meadow\n"
+
+-- |
+--
+-- 数を言葉に変換
+--
+num :: [String]
+num = ["one","two","three","four","five","six","seven","eight","nine"]
+
+-- |
+--
+-- 先頭の文字だけ大文字にする
+--
+-- >>> toUpperOnlyHead "abc"
+-- "Abc"
+toUpperOnlyHead :: String -> String
+toUpperOnlyHead [] = []
+toUpperOnlyHead (c:cs) = toUpper c : cs
