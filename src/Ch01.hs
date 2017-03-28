@@ -21,12 +21,18 @@ module Ch01 (
   , ansB
   -- ** 練習問題C
   , ansC
+  -- ** 練習問題D
+  , ansD
+  -- ** 練習問題E
+  , ansE
+  -- ** 練習問題F
+  , anagrams, showEntry
   ) where
 
 import Prelude hiding (Word)
 import Data.Char (toLower)
 import Data.Ord (comparing)
-import Data.List (sort, sortBy)
+import Data.List (sort, sortBy, sortOn, intersperse)
 
 -- 1.3 例題: 頻出単語
 -- | 文章を表す型
@@ -262,3 +268,103 @@ ansB = undefined
 -- "HelloWorld!"
 ansC :: String
 ansC = undefined
+
+
+-- |
+--
+-- = 問題の答え
+--
+-- すべてのテキスト中の文字をすべて小文字に変換してから、テキストを単語に分ける方法
+-- > words . map toLower
+--
+-- 単語に分けてから小文字に変換する方法
+-- > map (map toLower) . words
+--
+-- > words   :: String -> [String]
+-- > toLower :: Char -> Char
+--
+-- prop> (words $ map toLower xs) == (map (map toLower) $ words xs)
+ansD :: String
+ansD = undefined
+
+-- |
+--
+-- = 問題の答え
+--
+-- (+)  : 結合性を持つ (単位元: 0)
+-- (++) : 結合性を持つ (単位元: [])
+-- (.)  : 結合性を持つ (単位元: id)
+-- (/)  : 結合性を持たない
+--
+-- prop> (x + (y + z)) == ((x + y) + z)
+-- prop> (xs ++ (ys ++ zs)) == ((xs ++ ys) ++ zs)
+ansE :: String
+ansE = undefined
+
+-- |
+--
+-- anagrams s はアルファベット順の英単語のリストを取り、n文字の単語だけを取り出し、文字列を生成する
+--
+anagrams :: Int -> [Word] -> String
+anagrams n = concat . map showEntry . groupByLabel
+           . sortLabels . map addLabel . getWords n
+
+-- |
+--
+-- 長さ n の単語を取り出す
+--
+-- >>> getWords 2 ["abc", "d", "efg", "hi", "j", "", "kl"]
+-- ["hi","kl"]
+getWords :: Int -> [Word] -> [Word]
+getWords n = filter ((==n) . length)
+
+-- | アナグラムのラベル
+type Label = [Char]
+
+-- |
+--
+-- ラベルを付ける関数 (ラベルは最初と最後を入れ替えた形式)
+--
+-- >>> addLabel "word"
+-- ("dorw","word")
+--
+addLabel :: Word -> (Label, Word)
+addLabel w = (l, w)
+  where
+   hw = head w
+   lw = last w
+   mw = tail $ init w
+   l = [lw] ++ mw ++ [hw]
+
+-- |
+--
+-- ラベル付きの単語のリストをラベルのアルファベット順にソートする
+--
+-- >>> sortLabels [("dorw", "word"), ("abcd", "dbca")]
+-- [("abcd","dbca"),("dorw","word")]
+--
+sortLabels :: [(Label, Word)] -> [(Label, Word)]
+sortLabels = sortOn fst
+
+-- |
+--
+-- 同じラベルの単語をまとめる
+--
+-- >>> groupByLabel [("dorw", "zzzz"), ("dorw", "eeee")]
+-- [("dorw",["eeee","zzzz"])]
+--
+groupByLabel :: [(Label, Word)] -> [(Label, [Word])]
+groupByLabel = init . foldl go e
+  where
+    e = [("", [])]
+    go [] _ = []
+    go list@((l1, w1):xs) (l2, w2) = if l1 == l2 then (l1, sort $ w2:w1):xs else (l2, [w2]):list
+
+-- |
+--
+-- 対応表を文字列に変換し、連結する
+--
+-- >>> showEntry ("eginor", ["ignore", "region"])
+-- "eginor: ignore,region"
+showEntry :: (Label, [Word]) -> String
+showEntry (l, ws) = l ++ ": " ++ (concat $ intersperse "," ws)

@@ -5,6 +5,7 @@ import Test.QuickCheck
 import Ch01
   ( sortWords, countRuns, sortRuns, showRun
   , convert, convert1, convert2, convert2'
+  , showEntry
   )
 
 spec :: Spec
@@ -34,3 +35,8 @@ spec = do
   describe "Ex 1.5" $ do
     it "convert" $ do
       convert 301123 `shouldBe` "three hundred and one thousand one hundred and twenty-three"
+
+  describe "Ex 1.6" $ do
+    it "showEntry" $ do
+      showEntry ("eginrr", ["ringer"]) `shouldBe` "eginrr: ringer"
+      showEntry ("eginrs", ["resign","signer","singer"]) `shouldBe` "eginrs: resign,signer,singer"
