@@ -17,3 +17,11 @@ build:
   open-haddocks: true
 
   test: true
+
+templates:
+  params:
+    author-name: Shinya Yamaguchi
+    author-email: shinya.yamaguchi.bigmoon@gmail.com
+    category: Web
+    copyright: 'Copyright: (c) 2017 Shinya Yamaguchi'
+    github-username: waddlaw
